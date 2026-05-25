@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --background: #030712;
+  --foreground: #f9fafb;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Audio player styling */
+audio::-webkit-media-controls-panel {
+  background-color: #1f2937;
+}
+
+@layer components {
+  .input {
+    @apply bg-gray-800 text-gray-200 text-sm rounded px-3 py-2 border border-gray-600 focus:border-blue-500 focus:outline-none;
+  }
+
+  .btn-gray {
+    @apply text-sm bg-gray-700 hover:bg-gray-600 text-gray-200 px-3 py-1 rounded transition-colors inline-flex items-center justify-center;
+  }
+
+  .section-title {
+    @apply text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-3;
+  }
+}

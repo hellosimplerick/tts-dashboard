@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import VoicePanel from "@/components/VoicePanel";
-import { CRANKYVC_PRESETS, CrankyVCPreset } from "@/lib/crankyvc-presets";
 import { VoiceConfig } from "@/lib/types";
 
 interface ConfigSummary {
@@ -15,28 +14,6 @@ export default function Home() {
   const [compareBoth, setCompareBoth] = useState(false);
   const [panelAExternalConfig, setPanelAExternalConfig] = useState<{ config: VoiceConfig; timestamp: number } | null>(null);
   const [panelBExternalConfig, setPanelBExternalConfig] = useState<{ config: VoiceConfig; timestamp: number } | null>(null);
-
-  const handleLoadPreset = (preset: CrankyVCPreset, targetPanel: "A" | "B") => {
-    const fullConfig: VoiceConfig = {
-      name: preset.label,
-      quick_mutations: [],
-      format: "mp3",
-      sample_rate: "44100",
-      provider_options: "{}",
-      ...preset.config,
-    };
-    
-    const payload = {
-      config: fullConfig,
-      timestamp: Date.now(),
-    };
-    
-    if (targetPanel === "A") {
-      setPanelAExternalConfig(payload);
-    } else {
-      setPanelBExternalConfig(payload);
-    }
-  };
 
   const fetchConfigs = useCallback(async () => {
     try {
@@ -132,70 +109,6 @@ export default function Home() {
           </button>
         </div>
       </header>
-
-      {/* Presets Bar */}
-      <div className="max-w-[1800px] mx-auto px-6 pt-6">
-        <section className="bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-transparent border border-amber-500/20 rounded-2xl p-5 relative overflow-hidden">
-          {/* Subtle glowing background orb */}
-          <div className="absolute -right-20 -top-20 w-60 h-60 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-          
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-amber-500 font-bold text-[10px] tracking-wider uppercase bg-amber-500/15 px-2 py-0.5 rounded border border-amber-500/20">
-                  CrankyVC Presets
-                </span>
-                <span className="text-xs text-gray-500">·</span>
-                <h2 className="text-md font-bold text-white">Voice Personas</h2>
-              </div>
-              <p className="text-xs text-gray-400 mt-1">
-                Directly test and tune the 5 distinct voice characters used for podcasting. Compare them side-by-side.
-              </p>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {CRANKYVC_PRESETS.map((preset) => (
-              <div
-                key={preset.id}
-                className="bg-gray-900/60 backdrop-blur-sm border border-gray-800 rounded-xl p-3.5 flex flex-col justify-between hover:border-amber-500/50 transition-all duration-300 group shadow-md hover:shadow-lg hover:shadow-amber-500/5"
-              >
-                <div className="flex items-start gap-2.5">
-                  <span className="text-2xl mt-0.5 group-hover:scale-110 transition-transform duration-300">
-                    {preset.emoji}
-                  </span>
-                  <div>
-                    <h4 className="font-semibold text-sm text-gray-200 group-hover:text-amber-400 transition-colors">
-                      {preset.label}
-                    </h4>
-                    <p className="text-[11px] text-gray-400 leading-snug mt-0.5">
-                      {preset.description}
-                    </p>
-                    <span className="inline-block mt-1.5 text-[9px] font-semibold bg-gray-800 text-gray-400 px-1.5 py-0.5 rounded border border-gray-700/60 uppercase tracking-wide">
-                      {preset.config.voice}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="flex gap-2 mt-3 pt-2.5 border-t border-gray-800/60">
-                  <button 
-                    onClick={() => handleLoadPreset(preset, 'A')}
-                    className="flex-1 text-[10px] font-semibold bg-gray-800 hover:bg-amber-600/20 hover:text-amber-300 border border-gray-700 hover:border-amber-500/40 text-gray-300 py-1.5 rounded-md transition-all active:scale-95 text-center"
-                  >
-                    Load A
-                  </button>
-                  <button 
-                    onClick={() => handleLoadPreset(preset, 'B')}
-                    className="flex-1 text-[10px] font-semibold bg-gray-800 hover:bg-cyan-600/20 hover:text-cyan-300 border border-gray-700 hover:border-cyan-500/40 text-gray-300 py-1.5 rounded-md transition-all active:scale-95 text-center"
-                  >
-                    Load B
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
 
       {/* Main Content - A/B Panels */}
       <main className="max-w-[1800px] mx-auto px-6 py-6">
